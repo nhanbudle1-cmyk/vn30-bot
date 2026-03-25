@@ -10,5 +10,5 @@ def send(msg):
     requests.post(url, data={"chat_id": CHAT_ID, "text": msg})
 
 while True:
-    send("BOT VN30 ĐANG SỐNG 🔥")
+    send("🔥 BOT VN30 ĐANG CHẠY")
     time.sleep(60)
