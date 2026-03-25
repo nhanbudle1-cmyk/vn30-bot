@@ -1,22 +1,14 @@
 import requests
+import time
 import os
-from flask import Flask
 
-app = Flask(__name__)
+TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 
-TOKEN = os.environ.get("BOT_TOKEN")
-CHAT_ID = os.environ.get("CHAT_ID")
-
-@app.route("/")
-def home():
-    return "VN30 BOT RUNNING"
-
-def send_signal(msg):
+def send(msg):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    data = {
-        "chat_id": CHAT_ID,
-        "text": msg
-    }
-    requests.post(url, data=data)
+    requests.post(url, data={"chat_id": CHAT_ID, "text": msg})
 
-send_signal("✅ BOT VN30 đã hoạt động")
+while True:
+    send("BOT VN30 ĐANG SỐNG 🔥")
+    time.sleep(60)
