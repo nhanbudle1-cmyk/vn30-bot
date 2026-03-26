@@ -1,14 +1,28 @@
+from flask import Flask, request
 import requests
-import time
 import os
 
-TOKEN = os.getenv("BOT_TOKEN")
+app = Flask(__name__)
+
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
-def send(msg):
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    requests.post(url, data={"chat_id": CHAT_ID, "text": msg})
+@app.route("/")
+def home():
+    return "server dang chay"
 
-while True:
-    send("🔥 BOT VN30 ĐANG CHẠY")
-    time.sleep(60)
+@app.route("/webhook", methods=["GET","POST"])
+def webhook():
+    signal = request.args.get("signal")
+    price = request.args.get("price")
+    time = request.args.get("time")
+
+    text = f"🚨 TIN HIEU VN30 🚨\nLenh: {signal}\nGia: {price}\nTime: {time}"
+
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    requests.post(url, data={"chat_id": CHAT_ID, "text": text})
+
+    return "ok"
+
+if __name__ == "__main__":
+    app.run()
